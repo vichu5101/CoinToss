@@ -17,10 +17,7 @@ a = setInterval(function coinToss() {
         console.log("********** From All Rounds ************")
         console.table([playerScoreObj])
         result(playerScoreObj.player1Heads, playerScoreObj.player2Heads)
-<<<<<<< HEAD
         console.table(gameDetails)
-=======
->>>>>>> c88826429c2ad3ecd2a6f3919c64adf536d64040
     }
     else {
         console.log("Round :", round)
@@ -44,11 +41,6 @@ function coinTossing() {
                 findScore(player1CoinToss, player2CoinToss)
                 console.table([roundPlayerScoreObj])
                 result(roundPlayerScoreObj.player1Heads, roundPlayerScoreObj.player2Heads)
-<<<<<<< HEAD
-=======
-                roundPlayerScoreObj["player1Heads"] = 0
-                roundPlayerScoreObj["player2Heads"] = 0
->>>>>>> c88826429c2ad3ecd2a6f3919c64adf536d64040
             }
             else {
                 p1 = face[Math.floor(Math.random() * 2)]
@@ -57,12 +49,8 @@ function coinTossing() {
                 player2CoinToss.push(p2)
                 player1.push(p1)
                 player2.push(p2)
-<<<<<<< HEAD
                 gameDetails.push({"Round":round-1,"Player1":p1,"Player2":p2})
                 console.log(`Toss ${range+1} ➡️ " Player1 " 🎲${p1}  ↔️   " Player2 " 🎲${p2}`)
-=======
-                console.log("Player1 : ", p1, "-----", "Player2 :", p2)
->>>>>>> c88826429c2ad3ecd2a6f3919c64adf536d64040
                 range++
             }
         }, 1000);
@@ -95,8 +83,4 @@ function result(player1, player2) {
         console.log("Match Draw")
     }
     console.log("---------------------------------------------------------------------")
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> c88826429c2ad3ecd2a6f3919c64adf536d64040
