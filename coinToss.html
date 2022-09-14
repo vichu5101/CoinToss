@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        // User Inputs
+        playerScore = { Player: 0, Computer: 0 } // Player Scores
+        matchData = [] // The Whole Game Details
+        setHowManyIntervals = 4  // Setting Intervals for Game
+        setHowManySecondsPerInterval = 5 // Setting break time per interval
+        setHowManyTossesPerMatch = 10 // Setting how many tosses you need per round
+        setHowMaySecondsPerToss = 1 // Seconds for per toss
+        face = ["Heads", "Tails"] // like coin
+        eachRoundWinnerList = [] // Winner List of each round
+        //-------------------------------------------------------------------------------------------------
+        // Main Game Function seperated by time intervals
+        function coinTossFunction() {
+            intervalPerRound = 1
+            return new Promise((resolve) => {
+                resolve(
+                    a = setInterval(function coinToss() {
+                        if (intervalPerRound == setHowManyIntervals + 1) {
+                            clearInterval(a)
+                            console.log("********** From All Rounds ************")
+                            console.table([playerScore])
+                            console.log(finalCalculation(playerScore.Player, playerScore.Computer))
+                            console.log("--- FINAL ---")
+                            result(playerScore.Player, playerScore.Computer)
+                        }
+                        else {
+                            console.log(`>>>>>>>>>>>       Round ${intervalPerRound}       <<<<<<<<<<<`)
+                            coinTossing()
+                            intervalPerRound++
+                            return coinToss
+                        }
+                    }(), (setHowManyTossesPerMatch + setHowManySecondsPerInterval) * 1000)
+                )
+            })
+        }
+        //-------------------------------------------------------------------------------------------------
+        // Tossing the Coin by Player and Computer and time intervals between each Coin Toss
+        function coinTossing() {
+            playerCoinTossDetails = []
+            computerCoinTossDetails = []
+            coinTossRange = 0
+            b = setInterval(() => {
+                if (coinTossRange == setHowManyTossesPerMatch) {
+                    clearInterval(b)
+                    calculatingScore(playerCoinTossDetails, computerCoinTossDetails)
+                    console.table([playerScore])
+                    console.log(finalCalculation(playerScore.Player, playerScore.Computer))
+                    result(playerScore.Player, playerScore.Computer)
+                    eachRoundWinnerList.push(finalCalculation(playerScore.Player, playerScore.Computer))
+                }
+                else {
+                    tossingTheCoin()
+                    coinTossRange++
+                }
+            }, setHowMaySecondsPerToss * 1000);
+        }
+        //-------------------------------------------------------------------------------------------------
+        // Calculating Score by who got heads (Player, Computer)
+        function calculatingScore(player, computer) {
+            for (i of player) {
+                if (i == "Heads") {
+                    playerScore.Player += 1
+                }
+            }
+            for (i of computer) {
+                if (i == "Heads") {
+                    playerScore.Computer += 1
+                }
+            }
+        }
+        //-------------------------------------------------------------------------------------------------
+        // Finding Winner Result by Player Score and Computer Score
+        function result(player1, player2) {
+            if (player1 > player2) {
+                console.log(`⏩ Player Won`)
+            }
+            else if (player1 < player2) {
+                console.log(`⏩ Computer Won`)
+            }
+            else {
+                console.log("⏩ Match Draw")
+            }
+            console.log("---------------------------------------------------")
+        }
+        //-------------------------------------------------------------------------------------------------
+        // Tossing the Coin
+        function tossingTheCoin() {
+            playerTurn = face[Math.floor(Math.random() * 2)]
+            computerTurn = face[Math.floor(Math.random() * 2)]
+            playerCoinTossDetails.push(playerTurn)
+            computerCoinTossDetails.push(computerTurn)
+            matchData.push({ "Round": intervalPerRound - 1, "Player": playerTurn, "Computer": computerTurn })
+            console.log(`Toss ${coinTossRange + 1} ➡️ \n🎲 ===> Player   : " ${playerTurn} "\n🎲 ===> Computer : " ${computerTurn} "`)
+        }
+        //-------------------------------------------------------------------------------------------------
+        // Finding Final Result Calculation by using score difference between Player and Computer
+        function finalCalculation(Player, Computer) {
+            scoreDifference = Player - Computer
+            if (scoreDifference > 0) {
+                return (`Player Got ${Math.abs(scoreDifference)} Heads greater than Computer`)
+            }
+            else if (scoreDifference == 0) {
+                return ("Match Draw")
+            }
+            else {
+                return (`Computer Got ${Math.abs(scoreDifference)} Heads greater than Player`)
+            }
+        }
+        //-------------------------------------------------------------------------------------------------
+        // Waiting Function (until the Game is over)
+        function waitingFunction() {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve(console.log(">>>>>>>>>>>>>>>>> Game is over <<<<<<<<<<<<<<"),
+                        console.log("---------------------------------------------------"))
+                }, (setHowManyTossesPerMatch + setHowManySecondsPerInterval) * 1000 * setHowManyIntervals + 100);
+            })
+        }
+        //-------------------------------------------------------------------------------------------------
+        // Finding Match Details by using Round number
+        function findMatchDetailsByRound(roundNumber) {
+            console.log(`Match Details of Round :${roundNumber}`)
+            separatingDetailsByRound = []
+            matchData.forEach(element => {
+                if (element.Round == roundNumber) {
+                    separatingDetailsByRound.push(element)
+                }
+            });
+            console.table(separatingDetailsByRound)
+        }
+        //-------------------------------------------------------------------------------------------------
+        // Transfering the Match data to Excel Sheet by Converting and downloading the csv file
+        function csvDataFile() {
+            matchDataFile = ""
+            matchDataFile += "Round,Player,Computer"
+            matchDataFile += "\r\n"
+            resultNo = 0
+            roundInterval = setHowManyTossesPerMatch - 1
+            for (i of matchData) {
+                matchDataFile += i.Round + "," + i.Player + "," + i.Computer + ","
+                matchDataFile += "\r\n"
+                if (matchData.indexOf(i) == roundInterval) {
+                    matchDataFile += eachRoundWinnerList[resultNo]
+                    matchDataFile += "\r\n"
+                    resultNo++
+                    roundInterval = roundInterval + setHowManyTossesPerMatch
+                    if (resultNo == setHowManyIntervals) {
+                        matchDataFile += "----- FINAL All ROUNDS-----"
+                        matchDataFile += "\r\n"
+                        matchDataFile += eachRoundWinnerList[resultNo - 1]
+                        matchDataFile += "\r\n"
+                    }
+                }
+            }
+            let tempBlob = new Blob([matchDataFile], { type: "text\csv" })
+            //download url which is temporary
+            let tempURL = window.URL.createObjectURL(tempBlob)
+            let activation = document.createElement("a")
+            activation.href = tempURL
+            //forcing this activation or forcefully downloading
+            activation.download = "CoinTossGame.csv"
+            //forceful click
+            activation.click()
+            window.URL.revokeObjectURL(tempURL)
+            activation.remove()
+        }
+        //-------------------------------------------------------------------------------------------------
+        // Async function for waiting until the Game over
+        async function gameFunction() {
+            await coinTossFunction()
+            await waitingFunction()
+            csvDataFile() // Downloading csv for Game Data
+            findMatchDetailsByRound(1) // Finding Match Details by using Number of Round
+        }
+        //-------------------------------------------------------------------------------------------------
+        // Async Function
+        gameFunction() 
+    </script>
+</body>
+
+</html>
