@@ -107,7 +107,7 @@
             computerTurn = face[Math.floor(Math.random() * 2)]
             playerCoinTossDetails.push(playerTurn)
             computerCoinTossDetails.push(computerTurn)
-            matchData.push({ "Round": intervalPerRound - 1, "Player": playerTurn, "Computer": computerTurn })
+            matchData.push({ "Round": intervalPerRound - 1, "Toss": coinTossRange + 1, "Player": playerTurn, "Computer": computerTurn })
             console.log(`Toss ${coinTossRange + 1} ➡️ \n🎲 ===> Player   : " ${playerTurn} "\n🎲 ===> Computer : " ${computerTurn} "`)
         }
         //-------------------------------------------------------------------------------------------------
@@ -150,12 +150,12 @@
         // Transfering the Match data to Excel Sheet by Converting and downloading the csv file
         function csvDataFile() {
             matchDataFile = ""
-            matchDataFile += "Round,Player,Computer"
+            matchDataFile += "Round,Toss,Player,Computer"
             matchDataFile += "\r\n"
             resultNo = 0
             roundInterval = setHowManyTossesPerMatch - 1
             for (i of matchData) {
-                matchDataFile += i.Round + "," + i.Player + "," + i.Computer + ","
+                matchDataFile += i.Round + "," + i.Toss + "," + i.Player + "," + i.Computer
                 matchDataFile += "\r\n"
                 if (matchData.indexOf(i) == roundInterval) {
                     matchDataFile += "From Round :" + (resultNo + 1) + " ===> " + eachRoundWinnerList[resultNo]
