@@ -19,7 +19,12 @@
         setHowMaySecondsPerToss = 1 // Seconds for per toss
         face = ["Heads", "Tails"] // like coin
         eachRoundWinnerList = [] // Winner List of each round
-        //-------------------------------------------------------------------------------------------------
+        //-------------------------------------------------------------------------------------------------   
+        // Consoling Rules and regulation of the Game
+        console.log("COIN TOSS GAME ===> contains two Players (Player and Computer)")
+        console.log(`===>${setHowManyIntervals} Intervals in this Match \n===>${setHowManySecondsPerInterval} Seconds per Interval`)
+        console.log(`===>${setHowManyTossesPerMatch} Tosses per Round \n===>${setHowMaySecondsPerToss} seconds per Toss`)
+        //-------------------------------------------------------------------------------------------------   
         // Main Game Function seperated by time intervals
         function coinTossFunction() {
             intervalPerRound = 1
@@ -33,6 +38,7 @@
                             console.log(finalCalculation(playerScore.Player, playerScore.Computer))
                             console.log("--- FINAL ---")
                             result(playerScore.Player, playerScore.Computer)
+                            console.table(matchData)
                         }
                         else {
                             console.log(`>>>>>>>>>>>       Round ${intervalPerRound}       <<<<<<<<<<<`)
@@ -55,6 +61,7 @@
                     clearInterval(b)
                     calculatingScore(playerCoinTossDetails, computerCoinTossDetails)
                     console.table([playerScore])
+                    console.log("From Round :", intervalPerRound - 1)
                     console.log(finalCalculation(playerScore.Player, playerScore.Computer))
                     result(playerScore.Player, playerScore.Computer)
                     eachRoundWinnerList.push(finalCalculation(playerScore.Player, playerScore.Computer))
@@ -151,12 +158,12 @@
                 matchDataFile += i.Round + "," + i.Player + "," + i.Computer + ","
                 matchDataFile += "\r\n"
                 if (matchData.indexOf(i) == roundInterval) {
-                    matchDataFile += eachRoundWinnerList[resultNo]
+                    matchDataFile += "From Round :" + (resultNo + 1) + " ===> " + eachRoundWinnerList[resultNo]
                     matchDataFile += "\r\n"
                     resultNo++
                     roundInterval = roundInterval + setHowManyTossesPerMatch
                     if (resultNo == setHowManyIntervals) {
-                        matchDataFile += "----- FINAL All ROUNDS-----"
+                        matchDataFile += "----- FINAL RESULT -----"
                         matchDataFile += "\r\n"
                         matchDataFile += eachRoundWinnerList[resultNo - 1]
                         matchDataFile += "\r\n"
